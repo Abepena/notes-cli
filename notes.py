@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
-import datetime
 from collections import OrderedDict
+import datetime
+import sys
+
 
 from peewee import *
 
@@ -12,6 +14,7 @@ class Entry(Model):
 
     class Meta: 
         database = db
+
 
 def menu_loop():
     """Show the menu"""
@@ -28,9 +31,16 @@ def menu_loop():
         if choice in menu:
             menu[choice]()
 
+
 def add_entry():
     """Add an entry"""
-    pass
+    print('Enter Your entry, press CTRL+D when done')
+    data = sys.stdin.read().strip()
+
+    if data:
+        if input('\nSave note? [Y/n]: ').lower() != 'n':
+            Entry.create(content=data)
+            print('Saved!')
 
 def view_entries():
     """View all entries"""
@@ -47,8 +57,8 @@ def initialize():
 
 #using an ordered dict so that menu prints menu in the same order
 menu = OrderedDict([
-    ('a', 'add_entry'),
-    ('v', 'view_entries')
+    ('a', add_entry),
+    ('v', view_entries)
 ])
 if __name__ == '__main__':
     initialize()
