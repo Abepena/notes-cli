@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 from collections import OrderedDict
 import datetime
+import os
 import sys
 
 
@@ -21,6 +22,7 @@ def menu_loop():
     choice = None
     #Print out the menu until user types 'q'
     while choice != 'q':
+        clear()
         print("\nEnter 'q' to quit")
         for key, val in menu.items():
             #key is choice letter, value is the function assciated w/ that letter
@@ -29,7 +31,10 @@ def menu_loop():
         choice = input('Action: ').lower().strip() 
         #call the function associated with input letter if any
         if choice in menu:
+            clear()
             menu[choice]()
+    #clear the screen 1 last time to remove interface from command line
+    clear()
 
 
 def add_entry():
@@ -55,6 +60,7 @@ def view_entries(search_query=None):
         entries = entries.where(Entry.content.contains(search_query))
     
     for entry in entries:
+        clear()
         timestamp = entry.timestamp.strftime('%A %B %d, %Y:%M%p')
         print(timestamp)
         print('=' * len(timestamp) + '\n')
@@ -83,6 +89,9 @@ def initialize():
     """ Create db and tables if they don't exist """
     db.connect()
     db.create_tables([Entry], safe=True)
+
+def clear():
+    os.system('cls' if os.name == 'nt' else 'clear')
 
 #using an ordered dict so that menu prints menu in the same order
 menu = OrderedDict([
