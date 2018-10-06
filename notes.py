@@ -44,6 +44,22 @@ def add_entry():
 
 def view_entries():
     """View all entries"""
+    entries = Entry.select().order_by(Entry.timestamp.desc())
+    
+    for entry in entries:
+        timestamp = entry.timestamp.strftime('%A %B %d, %Y:%M%p')
+        print(timestamp)
+        print('=' * len(timestamp))
+        print(entry.content)
+        print('n) next entry')
+        print('q) return to main menu')
+
+        next_action = input('Action: [N/q]').lower().strip()
+
+        if next_action == 'q':
+            break
+
+def search_entries():
     pass
 
 def delete_entry(entry):
@@ -58,7 +74,8 @@ def initialize():
 #using an ordered dict so that menu prints menu in the same order
 menu = OrderedDict([
     ('a', add_entry),
-    ('v', view_entries)
+    ('v', view_entries),
+    ('s', search_entries),
 ])
 if __name__ == '__main__':
     initialize()
