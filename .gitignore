@@ -1,0 +1,2 @@
+# Just ignores by personal notes saved to a sqlite.db file
+*.db
